@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Presentation/**/*.cs" />
+    <Compile Include="../CodeWalker/ClxnShortcuts.cs" Link="ClxnShortcuts.cs" />
+    <ProjectReference Include="../CodeWalker.Core/CodeWalker.Core.csproj" />
+    <Compile Include="../CodeWalker/ClxnDocument.cs" Link="ClxnDocument.cs" />
+    <Compile Include="../CodeWalker/ClxnCameraNavigation.cs" Link="ClxnCameraNavigation.cs" />
+    <Compile Include="../CodeWalker/ClxnGroundMath.cs" Link="ClxnGroundMath.cs" />
+    <Compile Include="../CodeWalker/ClxnFlightMath.cs" Link="ClxnFlightMath.cs" />
+    <Compile Include="../CodeWalker/ClxnJournal.cs" Link="ClxnJournal.cs" />
+    <Compile Include="../CodeWalker/ClxnVideoPlan.cs" Link="ClxnVideoPlan.cs" />
+    <Compile Include="../CodeWalker/ClxnMp4Encoder.cs" Link="ClxnMp4Encoder.cs" />
+  </ItemGroup>
+<ItemGroup><Compile Include="../CodeWalker/ClxnVisibility.cs" Link="ClxnVisibility.cs" /></ItemGroup></Project>

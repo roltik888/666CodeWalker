@@ -1,0 +1,7 @@
+**/bin/
+**/obj/
+.vs/
+*.user
+*.suo
+*.mp4
+*.clxn.bak
