@@ -53,12 +53,12 @@ namespace CodeWalker
     {
         internal static string DataFolder=>Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"666clxn");
         internal ClxnHomeForm() {
-            Text="666clxn | Scene Studio 0.17"; ClientSize=new Size(1080,760); MinimumSize=new Size(940,720); ClxnStyle.Apply(this);
+            Text="666clxn | Scene Studio 0.18"; ClientSize=new Size(1080,760); MinimumSize=new Size(940,720); ClxnStyle.Apply(this);
             var root=new TableLayoutPanel { Dock=DockStyle.Fill,Padding=new Padding(32,22,32,24),ColumnCount=1,RowCount=4 };
             root.RowStyles.Add(new RowStyle(SizeType.Absolute,45)); root.RowStyles.Add(new RowStyle(SizeType.Absolute,230)); root.RowStyles.Add(new RowStyle(SizeType.Percent,100)); root.RowStyles.Add(new RowStyle(SizeType.Absolute,53)); Controls.Add(root);
             var nav=new Panel { Dock=DockStyle.Fill }; nav.Controls.Add(new Label { Text="666clxn   /   SCENE STUDIO",Font=new Font("Segoe UI",12,FontStyle.Bold),AutoSize=true,Location=new Point(0,3) });
             var theme=ClxnStyle.Button("◐  Тема",(s,e)=>ClxnTheme.Toggle(),105);theme.Dock=DockStyle.Right;nav.Controls.Add(theme);
-            var version=ClxnStyle.Label("●  LOCAL WORKSPACE   /   v0.17",9,ClxnStyle.Mint); version.Location=new Point(385,9); nav.Controls.Add(version); root.Controls.Add(nav,0,0);
+            var version=ClxnStyle.Label("●  LOCAL WORKSPACE   /   v0.18",9,ClxnStyle.Mint); version.Location=new Point(385,9); nav.Controls.Add(version); root.Controls.Add(nav,0,0);
             var hero=new ClxnHero { Dock=DockStyle.Fill,Padding=new Padding(25,18,25,10) }; root.Controls.Add(hero,0,1);
             hero.Controls.Add(new Label { Text="Собери сцену.\nПоставь камеру.",Font=new Font("Segoe UI",30,FontStyle.Bold),AutoSize=true,Location=new Point(25,19),BackColor=Color.Transparent });
             hero.Controls.Add(new Label { Text="Персонажи, рисунки и пролётки в одном проекте.",AutoSize=true,ForeColor=ClxnStyle.Muted,Location=new Point(29,146),BackColor=Color.Transparent });

@@ -1,4 +1,4 @@
-# 666clxn Scene Studio 0.17
+# 666clxn Scene Studio 0.18
 
 Редактор сцен GTA V на базе CodeWalker.
 
@@ -13,3 +13,5 @@
 
 Подробности: [README-RU.txt](README-RU.txt). Источники карт: [SOURCES.txt](CodeWalker/MapLayers/SOURCES.txt).
 Базовый проект: [dexyfex/CodeWalker](https://github.com/dexyfex/CodeWalker). Исходные лицензии и уведомления сохранены.
+
+В 0.18 исправлены задержка и перестановка подписей при движении камеры. Подписи обновляются отдельным таймером 16 мс; дальность остаётся 500 м.
