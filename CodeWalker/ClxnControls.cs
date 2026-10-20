@@ -14,10 +14,24 @@ namespace CodeWalker {
 
  }
  internal sealed class ClxnActionButton:Button {
+  Color CanvasColour {get{for(Control c=Parent;c!=null;c=c.Parent)if(c.BackColor.A==255)return c.BackColor;return ClxnStyle.Background;}}
+  protected override void OnPaintBackground(PaintEventArgs e){e.Graphics.Clear(CanvasColour);}
   readonly Timer animation=new Timer{Interval=16};bool hot,down;float blend,selectedBlend,ripple;Point rippleOrigin;
-  internal ClxnActionButton(){DoubleBuffered=true;FlatStyle=FlatStyle.Flat;FlatAppearance.BorderSize=0;MouseEnter+=(s,e)=>{hot=true;animation.Start();};MouseLeave+=(s,e)=>{hot=false;down=false;animation.Start();};MouseDown+=(s,e)=>{down=true;ripple=1;rippleOrigin=PointToClient(Cursor.Position);animation.Start();Invalidate();};MouseUp+=(s,e)=>{down=false;Invalidate();};BackColorChanged+=(s,e)=>animation.Start();animation.Tick+=(s,e)=>{if(!ClxnMotion.Enabled){blend=hot?1:0;selectedBlend=BackColor==ClxnStyle.Accent?1:0;ripple=0;Invalidate();animation.Stop();return;}ripple*=.86f;var target=hot?1f:0f;var active=BackColor==ClxnStyle.Accent?1f:0f;blend+=(target-blend)*.2f;selectedBlend+=(active-selectedBlend)*.18f;Invalidate();if(Math.Abs(target-blend)<.005f&&Math.Abs(active-selectedBlend)<.005f&&ripple<.005f)animation.Stop();};}
+  internal ClxnActionButton(){SetStyle(ControlStyles.UserPaint|ControlStyles.AllPaintingInWmPaint|ControlStyles.OptimizedDoubleBuffer|ControlStyles.ResizeRedraw|ControlStyles.Opaque,true);DoubleBuffered=true;UseVisualStyleBackColor=false;FlatStyle=FlatStyle.Flat;FlatAppearance.BorderSize=0;MouseEnter+=(s,e)=>{hot=true;animation.Start();};MouseLeave+=(s,e)=>{hot=false;down=false;animation.Start();};MouseDown+=(s,e)=>{down=true;ripple=1;rippleOrigin=PointToClient(Cursor.Position);animation.Start();Invalidate();};MouseUp+=(s,e)=>{down=false;Invalidate();};BackColorChanged+=(s,e)=>animation.Start();animation.Tick+=(s,e)=>{if(!ClxnMotion.Enabled){blend=hot?1:0;selectedBlend=BackColor==ClxnStyle.Accent?1:0;ripple=0;Invalidate();animation.Stop();return;}ripple*=.86f;var target=hot?1f:0f;var active=BackColor==ClxnStyle.Accent?1f:0f;blend+=(target-blend)*.2f;selectedBlend+=(active-selectedBlend)*.18f;Invalidate();if(Math.Abs(target-blend)<.005f&&Math.Abs(active-selectedBlend)<.005f&&ripple<.005f)animation.Stop();};}
   protected override void Dispose(bool disposing){if(disposing)animation.Dispose();base.Dispose(disposing);}
-  protected override void OnPaint(PaintEventArgs e){var g=e.Graphics;g.SmoothingMode=SmoothingMode.AntiAlias;g.Clear(Parent?.BackColor??ClxnStyle.Surface);int inset=down?3:1;g.TranslateTransform(inset,inset);using(var path=ClxnShape.Round(Math.Max(2,Width-inset*2),Math.Max(2,Height-inset*2),12)){Color fill=ClxnShape.Mix(ClxnShape.Mix(ClxnStyle.Surface,ClxnStyle.Hover,blend),ClxnStyle.Accent,selectedBlend);using(var brush=new SolidBrush(fill))g.FillPath(brush,path);using(var pen=new Pen(Focused?ClxnStyle.Accent:ClxnStyle.Border,1))g.DrawPath(pen,path);}g.ResetTransform();if(ripple>.01f){using(var clip=ClxnShape.Round(Width,Height,12)){g.SetClip(clip);float radius=(1-ripple)*Width;using(var b=new SolidBrush(Color.FromArgb((int)(ripple*35),selectedBlend>.5f?Color.White:Color.Black)))g.FillEllipse(b,rippleOrigin.X-radius,rippleOrigin.Y-radius,radius*2,radius*2);g.ResetClip();}}TextRenderer.DrawText(g,Text,Font,new Rectangle(0,down?1:0,Width,Height),Enabled?(selectedBlend>.5f?ClxnStyle.OnAccent:ClxnStyle.Text):ClxnStyle.Muted,TextFormatFlags.HorizontalCenter|TextFormatFlags.VerticalCenter|TextFormatFlags.EndEllipsis);}
+  protected override void OnPaint(PaintEventArgs e){
+   if(Width<6||Height<6)return;
+   var g=e.Graphics;g.Clear(CanvasColour);g.SmoothingMode=SmoothingMode.AntiAlias;float dpi=DeviceDpi/96f;
+   using(var path=ClxnShape.Round(Width-4,Height-4,Math.Max(6,(int)(11*dpi))))using(var transform=new Matrix()){
+    transform.Translate(2,2);path.Transform(transform);
+    Color fill=ClxnShape.Mix(ClxnShape.Mix(ClxnStyle.Surface,ClxnStyle.Hover,blend),ClxnStyle.Accent,selectedBlend);
+    if(down)fill=ClxnShape.Mix(fill,ClxnStyle.Text,.08f);
+    using(var brush=new SolidBrush(fill))g.FillPath(brush,path);
+    if(ripple>.01f){var state=g.Save();g.SetClip(path,CombineMode.Intersect);float radius=(1-ripple)*Width;using(var brush=new SolidBrush(Color.FromArgb((int)(ripple*35),selectedBlend>.5f?Color.White:Color.Black)))g.FillEllipse(brush,rippleOrigin.X-radius,rippleOrigin.Y-radius,radius*2,radius*2);g.Restore(state);}
+    using(var pen=new Pen(Focused?ClxnStyle.Accent:ClxnStyle.Border,Math.Max(1,dpi)))g.DrawPath(pen,path);
+   }
+   TextRenderer.DrawText(g,Text,Font,new Rectangle(8,down?1:0,Math.Max(1,Width-16),Height),Enabled?(selectedBlend>.5f?ClxnStyle.OnAccent:ClxnStyle.Text):ClxnStyle.Muted,TextFormatFlags.HorizontalCenter|TextFormatFlags.VerticalCenter|TextFormatFlags.EndEllipsis|TextFormatFlags.SingleLine);
+  }
 
  }
  internal sealed class ClxnFlowCard:FlowLayoutPanel {

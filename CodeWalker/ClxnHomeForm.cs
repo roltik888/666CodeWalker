@@ -53,16 +53,19 @@ namespace CodeWalker
     {
         internal static string DataFolder=>Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"666clxn");
         internal ClxnHomeForm() {
-            Text="666clxn | Scene Studio 0.18"; ClientSize=new Size(1080,760); MinimumSize=new Size(940,720); ClxnStyle.Apply(this);
+            Text="666clxn | Scene Studio 0.22"; ClientSize=new Size(1080,760); MinimumSize=new Size(940,720); ClxnStyle.Apply(this);
             var root=new TableLayoutPanel { Dock=DockStyle.Fill,Padding=new Padding(32,22,32,24),ColumnCount=1,RowCount=4 };
             root.RowStyles.Add(new RowStyle(SizeType.Absolute,45)); root.RowStyles.Add(new RowStyle(SizeType.Absolute,230)); root.RowStyles.Add(new RowStyle(SizeType.Percent,100)); root.RowStyles.Add(new RowStyle(SizeType.Absolute,53)); Controls.Add(root);
             var nav=new Panel { Dock=DockStyle.Fill }; nav.Controls.Add(new Label { Text="666clxn   /   SCENE STUDIO",Font=new Font("Segoe UI",12,FontStyle.Bold),AutoSize=true,Location=new Point(0,3) });
             var theme=ClxnStyle.Button("◐  Тема",(s,e)=>ClxnTheme.Toggle(),105);theme.Dock=DockStyle.Right;nav.Controls.Add(theme);
-            var version=ClxnStyle.Label("●  LOCAL WORKSPACE   /   v0.18",9,ClxnStyle.Mint); version.Location=new Point(385,9); nav.Controls.Add(version); root.Controls.Add(nav,0,0);
+            var version=ClxnStyle.Label("●  LOCAL WORKSPACE   /   v0.22",9,ClxnStyle.Mint); version.Location=new Point(385,9); nav.Controls.Add(version); root.Controls.Add(nav,0,0);
             var hero=new ClxnHero { Dock=DockStyle.Fill,Padding=new Padding(25,18,25,10) }; root.Controls.Add(hero,0,1);
             hero.Controls.Add(new Label { Text="Собери сцену.\nПоставь камеру.",Font=new Font("Segoe UI",30,FontStyle.Bold),AutoSize=true,Location=new Point(25,19),BackColor=Color.Transparent });
             hero.Controls.Add(new Label { Text="Персонажи, рисунки и пролётки в одном проекте.",AutoSize=true,ForeColor=ClxnStyle.Muted,Location=new Point(29,146),BackColor=Color.Transparent });
             var open=ClxnStyle.Button("ОТКРЫТЬ МИР GTA V   →",(s,e)=>Launch("world"),280,true); open.Location=new Point(29,178); hero.Controls.Add(open);
+            var socials=new FlowLayoutPanel{Size=new Size(350,48),WrapContents=false,BackColor=ClxnStyle.Background,Padding=new Padding(2,0,0,0)};hero.Controls.Add(socials);
+            Action placeSocials=()=>socials.Location=new Point(hero.ClientSize.Width-375,174);hero.Resize+=(s,e)=>placeSocials();placeSocials();
+            socials.Controls.Add(ClxnStyle.Button("Discord клана ↗",(s,e)=>ClxnLinks.Open(this,ClxnLinks.Discord),162));socials.Controls.Add(ClxnStyle.Button("YouTube · Roltik ↗",(s,e)=>ClxnLinks.Open(this,ClxnLinks.YouTube),170));
             var cards=new TableLayoutPanel { Dock=DockStyle.Fill,ColumnCount=2,RowCount=2,Padding=new Padding(0,18,0,6) }; cards.ColumnStyles.Add(new ColumnStyle(SizeType.Percent,50)); cards.ColumnStyles.Add(new ColumnStyle(SizeType.Percent,50)); cards.RowStyles.Add(new RowStyle(SizeType.Percent,50)); cards.RowStyles.Add(new RowStyle(SizeType.Percent,50)); root.Controls.Add(cards,0,2);
             AddCard(cards,0,0,"01  /  LIVE 3D","Рисовать в 3D-мире","Метки и кисть прямо на поверхности карты",()=>Launch("world"));
             AddCard(cards,1,0,"02  /  WORLD EDITOR","Редактор YMAP","Объекты, сцены и проекты CodeWalker",()=>Launch("project"));

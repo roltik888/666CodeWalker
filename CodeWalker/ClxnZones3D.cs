@@ -17,6 +17,7 @@ namespace CodeWalker {
   int clxnGroundBudget;string clxnZoneLoadedMode;
   readonly List<ClxnProjectedPin> clxnZoneProjected=new List<ClxnProjectedPin>();
   void ClxnBuildZonesMenu(){
+   var community=new ToolStripMenuItem("666clxn · Сообщество");community.DropDownItems.Add("Discord клана ↗",null,(s,e)=>ClxnLinks.Open(this,ClxnLinks.Discord));community.DropDownItems.Add("YouTube создателя · Roltik ↗",null,(s,e)=>ClxnLinks.Open(this,ClxnLinks.YouTube));clxnMore.Items.Add(community);
    var menu=new ToolStripMenuItem("Зоны в 3D-мире");clxnMore.Items.Insert(0,menu);
    foreach(var pair in new[]{new[]{"Обычный вид","none"},new[]{"MCL · границы и позиции","mcl"},new[]{"Капты · площадки и границы","capt"}}){var mode=pair[1];var item=new ToolStripMenuItem(pair[0]){CheckOnClick=false,Tag=mode};item.Click+=(s,e)=>{ClxnFinishStroke();ClxnProject.Checkpoint();lock(RenderSyncRoot){ClxnProject.ZoneMode=mode;clxnZoneLoadedMode=null;}ClxnProject.Commit();foreach(var i in menu.DropDownItems.OfType<ToolStripMenuItem>())i.Checked=i==item;clxnMessage=mode=="none"?"Обычный 3D-мир: зоны скрыты.":"Зоны "+(mode=="mcl"?"MCL":"каптов")+" включены в 3D. Границы уточняют высоту по загруженным коллизиям; названия позиций — из справочника.";};menu.DropDownItems.Add(item);}
    menu.DropDownOpening+=(s,e)=>{foreach(var item in menu.DropDownItems.OfType<ToolStripMenuItem>())item.Checked=(string)item.Tag==ClxnProject.ZoneMode;};
